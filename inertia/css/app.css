@@ -8,29 +8,15 @@
 html,
 body,
 #app {
-  background-color: #F7F8FA;
   font-family: 'Poppins', sans-serif;
-  color: #46444c;
-  height: 100%;
-  width: 100%;
+  padding: 2rem;
 }
 
-.title {
-  font-size: 42px;
-  font-weight: 500;
-  color: #5a45ff;
+.card {
+  padding: 1.5rem;
 }
 
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
-}
-
-a {
-  text-decoration: underline;
-  color: #5a45ff;
+.border {
+  background-color: black;
+  height: 2px;
 }
