@@ -3,8 +3,9 @@ import type { InferPageProps } from '@adonisjs/inertia/types'
 import { Head, useForm } from '@inertiajs/react'
 
 export default function Home(props: InferPageProps<HomeController, 'render'>) {
-  const { musics } = props
+  const { musics, rating } = props
   const { data, setData, post } = useForm({ file: undefined })
+  console.log('rating', rating)
 
   function submit(e: any) {
     e.preventDefault()
@@ -36,13 +37,47 @@ export default function Home(props: InferPageProps<HomeController, 'render'>) {
           </div>
         </form>
       </div>
-      {musics.map(({ id, title, artist, album, count, rating, len }) => (
+      <div>
+        filter by rating:
+        <form>
+          <select name="rating" defaultValue={'select rating'}>
+            {rating === undefined && (
+              <>
+                <option>select rating</option>
+                <option value="no">0</option>
+                <option value="yes"> {'> 1'} </option>
+              </>
+            )}
+            {rating === 'select rating' && (
+              <>
+                <option>select rating</option>
+                <option value="no">0</option>
+                <option value="yes"> {'> 1'} </option>
+              </>
+            )}
+            {rating === 'no' && (
+              <>
+                <option value="no">0</option>
+                <option value="yes"> {'> 1'} </option>
+              </>
+            )}
+            {rating === 'yes' && (
+              <>
+                <option value="yes"> {'> 1'} </option>
+                <option value="no">0</option>
+              </>
+            )}
+          </select>
+          <button type="submit">filter</button>
+        </form>{' '}
+      </div>
+      {musics.map(({ id, title, artist, album, count, rating: r, len }) => (
         <div key={id} className="card">
           <div>title: {title}</div>
           <div>artist: {artist}</div>
           <div>album: {album}</div>
           <div>count: {count}</div>
-          <div>rating: {rating}</div>
+          <div>rating: {r}</div>
           <div>len: {len}</div>
           <div className="border"></div>
         </div>
