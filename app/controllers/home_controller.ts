@@ -9,7 +9,9 @@ import type { HttpContext } from '@adonisjs/core/http'
 
 export default class HomeController {
   async render({ inertia, request }: HttpContext) {
-    const { rating } = request.qs()
+    const { rating, page } = request.qs()
+
+    console.log('page:', page)
 
     // console.log('rating:', rating)
 
@@ -17,15 +19,27 @@ export default class HomeController {
 
     console.log('rating:', rating)
 
-    const musicsInstance = await Music.query()
-      // .orderBy('title', 'asc')
-      .if(rating, (query) => query.where('rating', `${rating === 'no' ? '=' : '>'}`, ratingVal))
-      // .where('rating', '=', 0)
-      // .andWhere('count', '>', 0)
-      // .andWhere('title', 'LIKE', '%y%')
-      .limit(20)
+    // const musicsInstance = await Music.query()
+    // .orderBy('title', 'asc')
+    // .if(rating, (query) => query.where('rating', `${rating === 'no' ? '=' : '>'}`, ratingVal))
+    // .where('rating', '=', 0)
+    // .andWhere('count', '>', 0)
+    // .andWhere('title', 'LIKE', '%y%')
+    // .limit(20)
     // .offset(1)
-    const musics = musicsInstance.map((m) => m.serialize())
-    return inertia.render('home', { musics, rating: rating as string })
+    // const musics = musicsInstance.map((m) => m.serialize())
+
+    const paginator = await Music.query()
+      .orderBy('title', 'asc')
+      .if(rating, (query) => query.where('rating', `${rating === 'no' ? '=' : '>'}`, ratingVal))
+      .paginate(Number(page) || 1, 10)
+
+    const musics = paginator.toJSON().data.map((m) => m.serialize())
+
+    // console.log(paginator.toJSON().meta)
+    // console.log(paginator.getUrlsForRange(1, paginator.lastPage))
+    const pageUrls = paginator.getUrlsForRange(1, paginator.lastPage)
+
+    return inertia.render('home', { musics, rating: rating as string, pageUrls })
   }
 }

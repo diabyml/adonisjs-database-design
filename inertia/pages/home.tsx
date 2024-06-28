@@ -1,9 +1,9 @@
 import type HomeController from '#controllers/home_controller'
 import type { InferPageProps } from '@adonisjs/inertia/types'
-import { Head, useForm } from '@inertiajs/react'
+import { Head, Link, useForm } from '@inertiajs/react'
 
 export default function Home(props: InferPageProps<HomeController, 'render'>) {
-  const { musics, rating } = props
+  const { musics, rating, pageUrls } = props
   const { data, setData, post } = useForm({ file: undefined })
   console.log('rating', rating)
 
@@ -83,7 +83,15 @@ export default function Home(props: InferPageProps<HomeController, 'render'>) {
         </div>
       ))}
 
-      <button>Load more</button>
+      <div>
+        {/* <button>Previous</button>
+        <button>Next</button> */}
+        {pageUrls.map(({ url, page }) => (
+          <Link href={url} style={{ marginRight: '8px' }}>
+            {page}
+          </Link>
+        ))}
+      </div>
     </>
   )
 }
